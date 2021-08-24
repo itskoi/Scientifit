@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "513137595531",
+    "project_id": "scientifit-c05c4",
+    "storage_bucket": "scientifit-c05c4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:513137595531:android:dcffd8208ac6052f1cf08e",
+        "android_client_info": {
+          "package_name": "com.itskoi.brew_crew"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "513137595531-n86oa8bv1jormo8ofs8jakm7l695ks5h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA2pMEuC3TZkqUY0fFXUarARGpI3t9JkqE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "513137595531-n86oa8bv1jormo8ofs8jakm7l695ks5h.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:513137595531:android:a3aef6b5f7b6409a1cf08e",
+        "android_client_info": {
+          "package_name": "com.scientifit.crew.scientifit"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "513137595531-n86oa8bv1jormo8ofs8jakm7l695ks5h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA2pMEuC3TZkqUY0fFXUarARGpI3t9JkqE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "513137595531-n86oa8bv1jormo8ofs8jakm7l695ks5h.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
