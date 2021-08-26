@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:scientifit/screens/authentication/authmain.dart';
 import 'package:scientifit/screens/authentication/register.dart';
 import 'package:scientifit/screens/authentication/signin.dart';
