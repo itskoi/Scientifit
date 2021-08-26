@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:scientifit/services/authservice.dart';
+import 'package:scientifit/utilities/templates.dart';
 import 'package:scientifit/utilities/validation.dart';
 
 class SignIn extends StatefulWidget {
@@ -17,10 +18,10 @@ class _SignInState extends State<SignIn> {
   String error = '';
 
   bool _hidePassword = true;
-
+  bool loading = false;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return loading ? Loading() : Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -148,7 +149,13 @@ class _SignInState extends State<SignIn> {
                 child: ElevatedButton(
                   onPressed: () async {
                     if (widget._formKey.currentState!.validate()) {
+                      setState(() {
+                        loading = true;
+                      });
                       var result = await widget._authService.signInWithEmailAndPassword(email, password);
+                      setState(() {
+                        loading = false;
+                      });
                       if (result == null) {
                         setState(() {
                           error = 'Email or Password is incorrect!';

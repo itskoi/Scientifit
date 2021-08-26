@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:scientifit/services/authservice.dart';
+import 'package:scientifit/utilities/templates.dart';
 import 'package:scientifit/utilities/validation.dart';
 
 class Register extends StatefulWidget {
@@ -13,6 +14,7 @@ class Register extends StatefulWidget {
 class _RegisterState extends State<Register> {
   bool _hidePassword = true;
   bool _acceptTermsAndConditions = true;
+  bool loading = false;
 
   String username = '';
   String email = '';
@@ -25,7 +27,7 @@ class _RegisterState extends State<Register> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return loading ? Loading() : Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -217,12 +219,19 @@ class _RegisterState extends State<Register> {
                   onPressed: () async {
                     if (widget._formKey.currentState!.validate()) {
                       if (_acceptTermsAndConditions) {
-                        var result = await widget._authService.createUserWithEmailAndPassword(email, password);
+                        setState(() {
+                          loading = true;
+                        });
+                        var result = await widget._authService.createUserWithEmailAndPassword(username, email, password);
+                        setState(() {
+                          loading = false;
+                        });
                         if (result == null) {
                           setState(() {
                             error = 'Can\'t not create the account';
                           });
                         }
+                        Navigator.of(context).pop();
                       } else {
                         setState(() {
                           error = 'Please agree to all the Terms and Conditions';
