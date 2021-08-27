@@ -11,7 +11,15 @@ String? ValidatePassword(String? str) {
 }
 
 String? ValidateUsername(String? str) {
-  if (str!.trim().length < 4)
+  if(RegExp(r'[!@#$%^&*(),.?":{}|<>]').hasMatch(str!))
+    return 'Please enter a valid username';
+  if (str.trim().length < 4)
     return 'Username must be at least 4 characters in length';
   return str.trim().isEmpty ? 'Enter an username' : null;
+}
+
+String? ValidateSearch(String? str) {
+  if(RegExp(r'[!@#$%^&*(),.?":{}|<>]').hasMatch(str!))
+    return 'Please enter a valid exercise name';
+  return str.trim().isEmpty ? 'Enter an exercise name for searching' : null;
 }

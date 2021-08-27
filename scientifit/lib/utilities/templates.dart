@@ -1,7 +1,8 @@
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:scientifit/models/databaseentry.dart';
 import 'package:scientifit/models/diaryentry.dart';
 import 'package:flutter/material.dart';
-import 'package:material_floating_search_bar/material_floating_search_bar.dart';
+import 'package:scientifit/utilities/singleton.dart' as global;
 
 class ExerciseCard extends StatelessWidget {
 
@@ -32,13 +33,18 @@ class ExerciseCard extends StatelessWidget {
                     fontSize: 18
                 ),
               ),
-              Text(
-                exercise.name,
-                style: TextStyle(
-                    color: Colors.black,
-                    fontFamily: 'OpenSans',
-                    fontWeight: FontWeight.w700,
-                    fontSize: 30
+              Container(
+                height: 60,
+                child: Text(
+                  global.dbExercise[exercise.did]!.name,
+                  overflow: TextOverflow.fade,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontFamily: 'OpenSans',
+                      fontWeight: FontWeight.w700,
+                      fontSize: 20
+                  ),
                 ),
               ),
               Row(
@@ -55,7 +61,7 @@ class ExerciseCard extends StatelessWidget {
                   ),
                   SizedBox(width: 5,),
                   Text(
-                    exercise.getCaloriesUnit(),
+                    global.dbExercise[exercise.did]!.caloriesUnit,
                     style: TextStyle(
                         color: Color(0xFFF9B751),
                         fontFamily: 'OpenSans',
@@ -100,13 +106,18 @@ class FoodCard extends StatelessWidget {
                     fontSize: 18
                 ),
               ),
-              Text(
-                food.name,
-                style: TextStyle(
-                    color: Colors.black,
-                    fontFamily: 'OpenSans',
-                    fontWeight: FontWeight.w700,
-                    fontSize: 30
+              Container(
+                height: 70,
+                child: Text(
+                  global.dbFood[food.did]!.name,
+                  textAlign: TextAlign.center,
+                  overflow: TextOverflow.fade,
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontFamily: 'OpenSans',
+                      fontWeight: FontWeight.w700,
+                      fontSize: 20
+                  ),
                 ),
               ),
               Row(
@@ -123,7 +134,7 @@ class FoodCard extends StatelessWidget {
                   ),
                   SizedBox(width: 5,),
                   Text(
-                    food.getCaloriesUnit(),
+                    global.dbFood[food.did]!.caloriesUnit,
                     style: TextStyle(
                         color: Color(0xFFF9B751),
                         fontFamily: 'OpenSans',
@@ -132,93 +143,6 @@ class FoodCard extends StatelessWidget {
                     ),
                   ),
                 ],
-              ),
-            ],
-          ),
-        )
-    );
-  }
-}
-
-class ExerciseCard2 extends StatelessWidget {
-
-  ExerciseCard2( { required this.exercise });
-
-  final ExerciseEntry exercise;
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-        elevation: 10,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
-        color: Colors.white,
-        child: Padding(
-          padding: const EdgeInsets.all(8),
-          child: Row(
-            children: [
-              Container(
-                width: 80,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      exercise.name,
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontFamily: 'OpenSans',
-                          fontWeight: FontWeight.w700,
-                          fontSize: 20
-                      ),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Text(
-                          exercise.duration.toString(),
-                          style: TextStyle(
-                              color: Color(0xFFDD8600),
-                              fontFamily: 'OpenSans',
-                              fontWeight: FontWeight.w700,
-                              fontSize: 18
-                          ),
-                        ),
-                        SizedBox(width: 5,),
-                        Text(
-                          exercise.getDurationUnit(),
-                          style: TextStyle(
-                              color: Color(0xFFF9B751),
-                              fontFamily: 'OpenSans',
-                              fontWeight: FontWeight.w400,
-                              fontSize: 18
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(width: 150,),
-              Text(
-                exercise.caloriesBurned.toString(),
-                style: TextStyle(
-                    color: Color(0xFFDD8600),
-                    fontFamily: 'OpenSans',
-                    fontWeight: FontWeight.w700,
-                    fontSize: 18
-                ),
-              ),
-              SizedBox(width: 5,),
-              Text(
-                exercise.getCaloriesUnit(),
-                style: TextStyle(
-                    color: Color(0xFFF9B751),
-                    fontFamily: 'OpenSans',
-                    fontWeight: FontWeight.w400,
-                    fontSize: 18
-                ),
               ),
             ],
           ),

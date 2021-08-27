@@ -1,3 +1,8 @@
-import 'package:scientifit/models/account.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:scientifit/models/databaseentry.dart';
+import 'package:scientifit/models/scientifituser.dart';
 
-Account? currentUser;
+User? currentAccount;
+ScientifitUser? currentUser;
+Map<String, DBExerciseEntry> dbExercise = {};
+Map<String, DBFoodEntry> dbFood = {};

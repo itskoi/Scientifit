@@ -1,18 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:scientifit/models/account.dart';
-import 'package:scientifit/services/database.dart';
+import 'package:scientifit/services/databaseservice.dart';
 
 class AuthService {
 
   final _auth = FirebaseAuth.instance;
 
-  // Get Account from UserCredential
-  Account? _getAccountFromUser(User? user) {
-    return user == null ? null : Account(uid: user.uid, username: 'None', email: 'None');
-  }
-
   // Account stream
-  Stream<Account?> get user => _auth.authStateChanges().map(_getAccountFromUser);
+  Stream<User?> get user => _auth.authStateChanges();
 
   // Register with Email & Password
   Future createUserWithEmailAndPassword(String username, String email, String password) async {
@@ -20,9 +14,9 @@ class AuthService {
       var result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
       User? user = result.user;
 
-      await DatabaseService(uid: user!.uid).updateUserDate(username, email);
+      await DatabaseService(uid: user!.uid).addNewUser(email: email, username: username);
 
-      return _getAccountFromUser(user);
+      return user;
     }
     catch (e) {
       print('AuthService > Sign up: $e');
@@ -36,7 +30,7 @@ class AuthService {
       var result = await _auth.signInWithEmailAndPassword(email: email, password: password);
       User? user = result.user;
       print(user!.email);
-      return _getAccountFromUser(user);
+      return user;
     }
     catch (e) {
       print('AuthService > Sign in: $e');

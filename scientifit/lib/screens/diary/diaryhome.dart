@@ -1,14 +1,12 @@
 import 'dart:ui';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:scientifit/models/scientifituser.dart';
 import 'package:scientifit/services/authservice.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
-import 'package:scientifit/services/database.dart';
+import 'package:scientifit/services/databaseservice.dart';
 import 'package:scientifit/utilities/singleton.dart' as global;
 import 'package:scientifit/utilities/templates.dart';
-import 'package:scientifit/models/account.dart';
 
 class DiaryHome extends StatefulWidget {
   final _authService = AuthService();
@@ -21,15 +19,16 @@ class _DiaryHomeState extends State<DiaryHome> {
   DateTime _date = DateTime.now();
   String _dateString = DateFormat('yyyy-MM-dd').format(DateTime.now());
 
-
   @override
   Widget build(BuildContext context) {
 
-    final user = Provider.of<Account?>(context);
-
-    return StreamBuilder<Account>(
-      stream: DatabaseService(uid: user!.uid).userData,
+    return StreamBuilder<ScientifitUser>(
+      stream: DatabaseService(uid: global.currentAccount!.uid).userData,
       builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          global.currentUser = snapshot.data;
+          print(global.currentUser!.uid);
+        }
         return Scaffold(
           backgroundColor: Color(0xFFFCFFF8),
           appBar: AppBar(
@@ -97,6 +96,10 @@ class _DiaryHomeState extends State<DiaryHome> {
             elevation: 5.0,
             children: [
               SpeedDialChild(
+                  onTap: () async {
+                    global.dbFood = await DatabaseService(uid: global.currentUser!.uid).getDBFood();
+                    await Navigator.pushNamed(context, '/food');
+                  },
                   child: Icon(Icons.restaurant_menu),
                   label: 'Food',
                   labelStyle: TextStyle(color: Colors.white),
@@ -105,6 +108,7 @@ class _DiaryHomeState extends State<DiaryHome> {
                   foregroundColor: Color(0xFFFFD89C)),
               SpeedDialChild(
                   onTap: () async {
+                    global.dbExercise = await DatabaseService(uid: global.currentUser!.uid).getDBExercises();
                     await Navigator.pushNamed(context, '/exercise');
                   },
                   child: Icon(Icons.directions_run),
@@ -377,16 +381,12 @@ class _DiaryHomeState extends State<DiaryHome> {
                     child: GridView.builder(
                       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 2),
-                      itemCount: global.currentUser!.countEntries(_dateString),
+                      itemCount: global.currentUser!.myFoodEntries.length + global.currentUser!.myExEntries.length,
                       padding: const EdgeInsets.all(15),
                       itemBuilder: (context, index) {
-                        if (index < global.currentUser!.countFoods(_dateString))
-                          return FoodCard(food: global.currentUser!.getFood(_dateString, index));
-                        return ExerciseCard(
-                            exercise: global.currentUser!.getExercise(
-                                _dateString,
-                                index -
-                                    global.currentUser!.countFoods(_dateString)));
+                        if (index < global.currentUser!.myFoodEntries.length)
+                          return FoodCard(food: global.currentUser!.myFoodEntries[index]);
+                        return ExerciseCard(exercise: global.currentUser!.myExEntries[index - global.currentUser!.myFoodEntries.length]);
                       },
                     )),
               ),
