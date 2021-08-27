@@ -27,6 +27,12 @@ class _DiaryHomeState extends State<DiaryHome> {
   List<FoodEntry> _foodEntries = [];
   List<ExerciseEntry> _exEntries = [];
 
+  Future<String> _calculation() async {
+    global.dbFood = await DatabaseService(uid: global.currentUser!.uid).getDBFood();
+    global.dbExercise = await DatabaseService(uid: global.currentUser!.uid).getDBExercises();
+    return 'Data loaded';
+  }
+
   void _initialize() {
     balance = 0;
     burned = 0;
@@ -50,17 +56,24 @@ class _DiaryHomeState extends State<DiaryHome> {
     balance -= burned;
   }
 
+  bool loading = false;
+
   @override
   Widget build(BuildContext context) {
 
-    return StreamBuilder<ScientifitUser>(
+    return loading ? Loading() : StreamBuilder<ScientifitUser>(
       stream: DatabaseService(uid: global.currentAccount!.uid).userData,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           global.currentUser = snapshot.data;
           print(global.currentUser!.uid);
-
           _initialize();
+        } else {
+          _exEntries = [];
+          _foodEntries = [];
+          balance = 0;
+          burned = 0;
+          consumed = 0;
         }
         return Scaffold(
           backgroundColor: Color(0xFFFCFFF8),
@@ -413,16 +426,31 @@ class _DiaryHomeState extends State<DiaryHome> {
                         borderRadius: BorderRadius.circular(20),
                         side: BorderSide(color: Color(0xFF2B463C), width: 3.0)),
                     /* TODO: DIARY CARD */
-                    child: GridView.builder(
-                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2),
-                      itemCount: _foodEntries.length + _exEntries.length,
-                      padding: const EdgeInsets.all(15),
-                      itemBuilder: (context, index) {
-                        if (index < _foodEntries.length)
-                          return FoodCard(food: _foodEntries[index]);
-                        return ExerciseCard(exercise: _exEntries[index - _foodEntries.length]);
-                      },
+                    child: FutureBuilder<String>(
+                      future: _calculation(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          return GridView.builder(
+                            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2),
+                            itemCount: _foodEntries.length + _exEntries.length,
+                            padding: const EdgeInsets.all(15),
+                            itemBuilder: (context, index) {
+                              if (index < _foodEntries.length)
+                                return FoodCard(food: _foodEntries[index]);
+                              return ExerciseCard(exercise: _exEntries[index - _foodEntries.length]);
+                            },
+                          );
+                        } else {
+                          return GridView.builder(
+                            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2),
+                            itemCount: 0,
+                            padding: const EdgeInsets.all(15),
+                            itemBuilder: (context, index) => Card(),
+                          );
+                        }
+                      }
                     )),
               ),
             ],

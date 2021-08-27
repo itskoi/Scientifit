@@ -12,6 +12,7 @@ class Coordinator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
+
     final account = Provider.of<User?>(context);
     if (account!=null) {
       global.currentAccount = account;
