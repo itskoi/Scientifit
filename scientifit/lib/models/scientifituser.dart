@@ -3,12 +3,14 @@ import 'package:scientifit/models/diaryentry.dart';
 class ScientifitUser {
   
   ScientifitUser( { required this.uid,  required this.username, required this.email, required this.height,
-    required this.weight, required this.myFoodEntries, required this.myExEntries} );
+    required this.gender, required this.age, required this.weight, required this.myFoodEntries, required this.myExEntries} );
   
   String uid;
   String username;
   String email;
 
+  bool gender;
+  int age;
   int height;
   int weight;
 

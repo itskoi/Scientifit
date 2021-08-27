@@ -16,10 +16,12 @@ class DatabaseService {
 
   // Add new user data
   Future addNewUser({required String username, required String email,
-    int height = 170, int weight = 60}) async {
+    bool gender = false, int age = 18, int height = 170, int weight = 60}) async {
     return await userCollection.doc(uid).set({
       'username': username,
       'email': email,
+      'age': age,
+      'gender': gender,
       'height' : height,
       'weight' : weight,
       'myExEntries' : [],
@@ -35,6 +37,8 @@ class DatabaseService {
     return await userCollection.doc(uid).set({
       'username' : currentUser!.username,
       'email' : currentUser!.email,
+      'age' : currentUser!.age,
+      'gender': currentUser!.gender,
       'height' : currentUser!.height,
       'weight' : currentUser!.weight,
       'myExEntries' : myExEntries.map((e) => {
@@ -48,7 +52,7 @@ class DatabaseService {
         'date' : e.date,
         'caloriesGained' : e.caloriesGained,
         'servingSize' : e.servingSize
-      })
+      }).toList(),
     });
   }
 
@@ -59,6 +63,8 @@ class DatabaseService {
     return await userCollection.doc(uid).set({
       'username' : currentUser!.username,
       'email' : currentUser!.email,
+      'age' : currentUser!.age,
+      'gender': currentUser!.gender,
       'height' : currentUser!.height,
       'weight' : currentUser!.weight,
       'myExEntries' : currentUser!.myExEntries.map((e) => {
@@ -82,6 +88,8 @@ class DatabaseService {
         uid: uid,
         username: snapshot['username'],
         email: snapshot['email'],
+        age: snapshot['age'],
+        gender: snapshot['gender'],
         height: snapshot['height'],
         weight: snapshot['weight'],
         myFoodEntries: List.from(snapshot['myFoodEntries']).map((e) => FoodEntry(

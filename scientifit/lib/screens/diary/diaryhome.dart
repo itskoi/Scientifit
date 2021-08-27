@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
+import 'package:scientifit/models/diaryentry.dart';
 import 'package:scientifit/models/scientifituser.dart';
 import 'package:scientifit/services/authservice.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
@@ -19,6 +20,36 @@ class _DiaryHomeState extends State<DiaryHome> {
   DateTime _date = DateTime.now();
   String _dateString = DateFormat('yyyy-MM-dd').format(DateTime.now());
 
+  int consumed = 0;
+  int burned = 0;
+  double balance = 0;
+
+  List<FoodEntry> _foodEntries = [];
+  List<ExerciseEntry> _exEntries = [];
+
+  void _initialize() {
+    balance = 0;
+    burned = 0;
+    consumed = 0;
+
+    _foodEntries = global.currentUser!.getFoodsWithDate(_dateString);
+    _exEntries = global.currentUser!.getExercisesWithDate(_dateString);
+
+    _exEntries.forEach((element) => burned += element.caloriesBurned);
+    _foodEntries.forEach((element) => consumed += element.caloriesGained);
+
+    if (global.currentUser!.gender == false) {
+      // Male
+      balance = (66.5 + 13.8 * global.currentUser!.weight + 5 * global.currentUser!.height) / (8.8 * global.currentUser!.age);
+    } else {
+      // Female
+      balance = (655.1 + 9.6 * global.currentUser!.weight + 1.9 * global.currentUser!.height) / (4.7 * global.currentUser!.age);
+    }
+
+    balance += consumed;
+    balance -= burned;
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -28,6 +59,8 @@ class _DiaryHomeState extends State<DiaryHome> {
         if (snapshot.hasData) {
           global.currentUser = snapshot.data;
           print(global.currentUser!.uid);
+
+          _initialize();
         }
         return Scaffold(
           backgroundColor: Color(0xFFFCFFF8),
@@ -152,7 +185,7 @@ class _DiaryHomeState extends State<DiaryHome> {
                                         fontFamily: 'OpenSans'),
                                   ),
                                   Text(
-                                    '1350',
+                                    burned.toString(),
                                     style: TextStyle(
                                         color: Colors.black,
                                         fontSize: 30,
@@ -213,7 +246,7 @@ class _DiaryHomeState extends State<DiaryHome> {
                                         fontFamily: 'OpenSans'),
                                   ),
                                   Text(
-                                    '905',
+                                    consumed.toString(),
                                     style: TextStyle(
                                         color: Colors.black,
                                         fontSize: 30,
@@ -279,6 +312,8 @@ class _DiaryHomeState extends State<DiaryHome> {
                                         _date = pickedDate;
                                         _dateString =
                                             DateFormat('yyyy-MM-dd').format(_date);
+
+                                        _initialize();
                                       });
                                     }
                                   },
@@ -332,7 +367,7 @@ class _DiaryHomeState extends State<DiaryHome> {
                                           fontFamily: 'OpenSans'),
                                     ),
                                     Text(
-                                      '172',
+                                      balance.round().toString(),
                                       style: TextStyle(
                                           color: Colors.black,
                                           fontSize: 30,
@@ -381,12 +416,12 @@ class _DiaryHomeState extends State<DiaryHome> {
                     child: GridView.builder(
                       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 2),
-                      itemCount: global.currentUser!.myFoodEntries.length + global.currentUser!.myExEntries.length,
+                      itemCount: _foodEntries.length + _exEntries.length,
                       padding: const EdgeInsets.all(15),
                       itemBuilder: (context, index) {
-                        if (index < global.currentUser!.myFoodEntries.length)
-                          return FoodCard(food: global.currentUser!.myFoodEntries[index]);
-                        return ExerciseCard(exercise: global.currentUser!.myExEntries[index - global.currentUser!.myFoodEntries.length]);
+                        if (index < _foodEntries.length)
+                          return FoodCard(food: _foodEntries[index]);
+                        return ExerciseCard(exercise: _exEntries[index - _foodEntries.length]);
                       },
                     )),
               ),

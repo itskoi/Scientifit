@@ -4,6 +4,7 @@ import 'package:scientifit/models/databaseentry.dart';
 import 'package:scientifit/models/diaryentry.dart';
 import 'package:scientifit/services/databaseservice.dart';
 import 'package:scientifit/utilities/singleton.dart' as global;
+import 'package:scientifit/utilities/templates.dart';
 
 class AddExercise extends StatefulWidget {
   @override
@@ -15,6 +16,8 @@ class _AddExerciseState extends State<AddExercise> {
 
   int duration = 1;
   String error = '';
+
+  bool loading = false;
 
   Widget build(BuildContext context) {
 
@@ -30,7 +33,7 @@ class _AddExerciseState extends State<AddExercise> {
       muscleGroups += ', ${exercise.muscles[i]}';
     }
 
-    return Scaffold(
+    return loading ? Loading() : Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
         leading: IconButton(
@@ -52,6 +55,9 @@ class _AddExerciseState extends State<AddExercise> {
         actions: [
           IconButton(
               onPressed: () async {
+                setState(() {
+                  loading = true;
+                });
                 await DatabaseService(uid: global.currentAccount!.uid).addExerciseToDiary(ExerciseEntry(
                     did: exercise.did,
                     date: DateFormat('yyyy-MM-dd').format(DateTime.now()),
@@ -59,6 +65,9 @@ class _AddExerciseState extends State<AddExercise> {
                     duration: duration
                   )
                 );
+                setState(() {
+                  loading = false;
+                });
                 Navigator.of(context).pop();
               },
               icon: Icon(

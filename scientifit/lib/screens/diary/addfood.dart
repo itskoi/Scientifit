@@ -4,6 +4,7 @@ import 'package:scientifit/models/databaseentry.dart';
 import 'package:scientifit/models/diaryentry.dart';
 import 'package:scientifit/services/databaseservice.dart';
 import 'package:scientifit/utilities/singleton.dart' as global;
+import 'package:scientifit/utilities/templates.dart';
 
 class AddFood extends StatefulWidget {
   @override
@@ -16,11 +17,13 @@ class _AddFoodState extends State<AddFood> {
   int serving = 1;
   String error = '';
 
+  bool loading = false;
+
   Widget build(BuildContext context) {
 
     final food = ModalRoute.of(context)!.settings.arguments as DBFoodEntry;
 
-    return Scaffold(
+    return loading ? Loading(): Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
         leading: IconButton(
@@ -42,6 +45,9 @@ class _AddFoodState extends State<AddFood> {
         actions: [
           IconButton(
               onPressed: () async {
+                setState(() {
+                  loading=true;
+                });
                 await DatabaseService(uid: global.currentAccount!.uid).addFoodToDiary(FoodEntry(
                     did: food.did,
                     date: DateFormat('yyyy-MM-dd').format(DateTime.now()),
@@ -49,6 +55,9 @@ class _AddFoodState extends State<AddFood> {
                     servingSize: serving
                   )
                 );
+                setState(() {
+                  loading=false;
+                });
                 Navigator.of(context).pop();
               },
               icon: Icon(
