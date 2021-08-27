@@ -4,12 +4,17 @@ import 'package:scientifit/models/diaryentry.dart';
 import 'package:flutter/material.dart';
 import 'package:scientifit/utilities/singleton.dart' as global;
 
-class ExerciseCard extends StatelessWidget {
+class ExerciseCard extends StatefulWidget {
 
   ExerciseCard( { required this.exercise });
 
   final ExerciseEntry exercise;
 
+  @override
+  _ExerciseCardState createState() => _ExerciseCardState();
+}
+
+class _ExerciseCardState extends State<ExerciseCard> {
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -36,7 +41,7 @@ class ExerciseCard extends StatelessWidget {
               Container(
                 height: 60,
                 child: Text(
-                  global.dbExercise[exercise.did]!.name,
+                  global.dbExercise[widget.exercise.did]!.name,
                   overflow: TextOverflow.fade,
                   textAlign: TextAlign.center,
                   style: TextStyle(
@@ -51,7 +56,7 @@ class ExerciseCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    exercise.caloriesBurned.toString(),
+                    widget.exercise.caloriesBurned.toString(),
                     style: TextStyle(
                         color: Color(0xFFDD8600),
                         fontFamily: 'OpenSans',
@@ -61,7 +66,7 @@ class ExerciseCard extends StatelessWidget {
                   ),
                   SizedBox(width: 5,),
                   Text(
-                    global.dbExercise[exercise.did]!.caloriesUnit,
+                    global.dbExercise[widget.exercise.did]!.caloriesUnit,
                     style: TextStyle(
                         color: Color(0xFFF9B751),
                         fontFamily: 'OpenSans',
@@ -77,12 +82,17 @@ class ExerciseCard extends StatelessWidget {
     );
   }
 }
-class FoodCard extends StatelessWidget {
+class FoodCard extends StatefulWidget {
 
   FoodCard( { required this.food });
 
   final FoodEntry food;
 
+  @override
+  _FoodCardState createState() => _FoodCardState();
+}
+
+class _FoodCardState extends State<FoodCard> {
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -109,7 +119,7 @@ class FoodCard extends StatelessWidget {
               Container(
                 height: 70,
                 child: Text(
-                  global.dbFood[food.did]!.name,
+                  global.dbFood[widget.food.did]!.name,
                   textAlign: TextAlign.center,
                   overflow: TextOverflow.fade,
                   style: TextStyle(
@@ -124,7 +134,7 @@ class FoodCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    food.caloriesGained.toString(),
+                    widget.food.caloriesGained.toString(),
                     style: TextStyle(
                         color: Color(0xFFDD8600),
                         fontFamily: 'OpenSans',
@@ -134,7 +144,7 @@ class FoodCard extends StatelessWidget {
                   ),
                   SizedBox(width: 5,),
                   Text(
-                    global.dbFood[food.did]!.caloriesUnit,
+                    global.dbFood[widget.food.did]!.caloriesUnit,
                     style: TextStyle(
                         color: Color(0xFFF9B751),
                         fontFamily: 'OpenSans',
