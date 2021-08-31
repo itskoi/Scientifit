@@ -19,8 +19,8 @@ class AuthService {
       return user;
     }
     catch (e) {
-      print('AuthService > Sign up: $e');
-      return null;
+      print('AuthService > Sign up: ${e}');
+      return e;
     }
   }
 
@@ -34,7 +34,7 @@ class AuthService {
     }
     catch (e) {
       print('AuthService > Sign in: $e');
-      return null;
+      return e;
     }
   }
 

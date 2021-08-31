@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:scientifit/services/authservice.dart';
 import 'package:scientifit/utilities/templates.dart';
@@ -156,12 +157,13 @@ class _SignInState extends State<SignIn> {
                       setState(() {
                         loading = false;
                       });
-                      if (result == null) {
-                        setState(() {
-                          error = 'Email or Password is incorrect!';
-                        });
-                      } else {
+                      if (result is User) {
                         Navigator.of(context).pop();
+                      } else {
+                        var code = result.toString();
+                        setState(() {
+                          error = ValidateSignIn(code);
+                        });
                       }
                     }
                   },
