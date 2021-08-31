@@ -3,14 +3,11 @@ import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:scientifit/models/diaryentry.dart';
 import 'package:scientifit/models/scientifituser.dart';
-import 'package:scientifit/services/authservice.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
-import 'package:scientifit/services/databaseservice.dart';
 import 'package:scientifit/utilities/singleton.dart' as global;
 import 'package:scientifit/utilities/templates.dart';
 
 class DiaryHome extends StatefulWidget {
-  final _authService = AuthService();
 
   @override
   _DiaryHomeState createState() => _DiaryHomeState();
@@ -28,8 +25,8 @@ class _DiaryHomeState extends State<DiaryHome> {
   List<ExerciseEntry> _exEntries = [];
 
   Future<String> _calculation() async {
-    global.dbFood = await DatabaseService(uid: global.currentUser!.uid).getDBFood();
-    global.dbExercise = await DatabaseService(uid: global.currentUser!.uid).getDBExercises();
+    global.dbFood = await global.databaseService!.getDBFood();
+    global.dbExercise = await global.databaseService!.getDBExercises();
     return 'Data loaded';
   }
 
@@ -62,7 +59,7 @@ class _DiaryHomeState extends State<DiaryHome> {
   Widget build(BuildContext context) {
 
     return loading ? Loading() : StreamBuilder<ScientifitUser>(
-      stream: DatabaseService(uid: global.currentAccount!.uid).userData,
+      stream: global.databaseService!.userData,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           global.currentUser = snapshot.data;
@@ -143,7 +140,7 @@ class _DiaryHomeState extends State<DiaryHome> {
             children: [
               SpeedDialChild(
                   onTap: () async {
-                    global.dbFood = await DatabaseService(uid: global.currentUser!.uid).getDBFood();
+                    global.dbFood = await global.databaseService!.getDBFood();
                     await Navigator.pushNamed(context, '/food');
                   },
                   child: Icon(Icons.restaurant_menu),
@@ -154,7 +151,7 @@ class _DiaryHomeState extends State<DiaryHome> {
                   foregroundColor: Color(0xFFFFD89C)),
               SpeedDialChild(
                   onTap: () async {
-                    global.dbExercise = await DatabaseService(uid: global.currentUser!.uid).getDBExercises();
+                    global.dbExercise = await global.databaseService!.getDBExercises();
                     await Navigator.pushNamed(context, '/exercise');
                   },
                   child: Icon(Icons.directions_run),
@@ -442,13 +439,7 @@ class _DiaryHomeState extends State<DiaryHome> {
                             },
                           );
                         } else {
-                          return GridView.builder(
-                            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2),
-                            itemCount: 0,
-                            padding: const EdgeInsets.all(15),
-                            itemBuilder: (context, index) => Card(),
-                          );
+                          return Loading();
                         }
                       }
                     )),

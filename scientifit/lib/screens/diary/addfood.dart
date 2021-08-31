@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:scientifit/models/databaseentry.dart';
 import 'package:scientifit/models/diaryentry.dart';
-import 'package:scientifit/services/databaseservice.dart';
 import 'package:scientifit/utilities/singleton.dart' as global;
 import 'package:scientifit/utilities/templates.dart';
 
@@ -48,7 +47,7 @@ class _AddFoodState extends State<AddFood> {
                 setState(() {
                   loading=true;
                 });
-                await DatabaseService(uid: global.currentAccount!.uid).addFoodToDiary(FoodEntry(
+                await global.databaseService!.addFoodToDiary(FoodEntry(
                     did: food.did,
                     date: DateFormat('yyyy-MM-dd').format(DateTime.now()),
                     caloriesGained: serving * food.caloriesGainedPerUnit,
