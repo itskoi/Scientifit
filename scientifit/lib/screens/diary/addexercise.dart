@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:scientifit/models/databaseentry.dart';
 import 'package:scientifit/models/diaryentry.dart';
-import 'package:scientifit/services/databaseservice.dart';
 import 'package:scientifit/utilities/singleton.dart' as global;
 import 'package:scientifit/utilities/templates.dart';
 
@@ -58,7 +57,7 @@ class _AddExerciseState extends State<AddExercise> {
                 setState(() {
                   loading = true;
                 });
-                await DatabaseService(uid: global.currentAccount!.uid).addExerciseToDiary(ExerciseEntry(
+                await global.databaseService!.addExerciseToDiary(ExerciseEntry(
                     did: exercise.did,
                     date: DateFormat('yyyy-MM-dd').format(DateTime.now()),
                     caloriesBurned: exercise.caloriesBurnedPerUnit * duration,
