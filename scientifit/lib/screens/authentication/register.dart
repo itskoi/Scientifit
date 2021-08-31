@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:scientifit/services/authservice.dart';
 import 'package:scientifit/utilities/templates.dart';
@@ -226,12 +227,14 @@ class _RegisterState extends State<Register> {
                         setState(() {
                           loading = false;
                         });
-                        if (result == null) {
+                        if (result is User) {
+                          Navigator.of(context).pop();
+                        } else {
+                          var code = result.toString();
                           setState(() {
-                            error = 'Can\'t not create the account';
+                            error = ValidateSignUp(code);
                           });
                         }
-                        Navigator.of(context).pop();
                       } else {
                         setState(() {
                           error = 'Please agree to all the Terms and Conditions';
