@@ -158,7 +158,7 @@ class _SignInState extends State<SignIn> {
                         loading = false;
                       });
                       if (result is User) {
-                        Navigator.of(context).pop();
+                        Navigator.of(context).popUntil(ModalRoute.withName('/'));
                       } else {
                         var code = result.toString();
                         setState(() {
