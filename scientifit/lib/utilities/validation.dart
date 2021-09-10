@@ -5,23 +5,24 @@ String? ValidateEmail(String? str) {
 }
 
 String? ValidatePassword(String? str) {
-  if(RegExp(r'[!@#$%^&*(),.?":{}|<>]').hasMatch(str!))
-    return 'Please enter a valid password';
-  return (str.length < 6) ? 'Enter a pwd 6+ chars long' : null;
+  //if(RegExp(r'[!@#$%^&*(),.?":{}|<>]').hasMatch(str!))
+    //return 'Please enter a valid password';
+  if(!RegExp(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$').hasMatch(str!))
+    return 'Password must be have a minimum of eight characters, at least one uppercase letter, one lowercase letter, one number and one special character';
 }
 
 String? ValidateUsername(String? str) {
   if(RegExp(r'[!@#$%^&*(),.?":{}|<>]').hasMatch(str!))
-    return 'Please enter a valid username';
+    return 'Usernames cannot contain special characters.';
   if (str.trim().length < 4)
     return 'Username must be at least 4 characters in length';
-  return str.trim().isEmpty ? 'Enter an username' : null;
+  return str.trim().isEmpty ? 'Enter a username' : null;
 }
 
 String? ValidateSearch(String? str) {
   if(RegExp(r'[!@#$%^&*(),.?":{}|<>]').hasMatch(str!))
-    return 'Please enter a valid exercise name';
-  return str.trim().isEmpty ? 'Enter an exercise name for searching' : null;
+    return 'Search query cannot contain special characters.';
+  return str.trim().isEmpty ? 'Enter something to search for an item...' : null;
 }
 
 String ValidateSignIn(String str) {
@@ -33,7 +34,7 @@ String ValidateSignIn(String str) {
     return 'The user corresponding to the given email has been disabled.';
   if (str.contains('wrong-password'))
     return 'The password is invalid for the given email';
-  return 'Can not connect to the server';
+  return 'Cannot connect to the server';
 }
 String ValidateSignUp(String str) {
   if (str.contains('email-already-in-use'))
@@ -44,5 +45,5 @@ String ValidateSignUp(String str) {
     return 'Email/password accounts are not enabled';
   if (str.contains('weak-password'))
     return 'The password is not strong enough';
-  return 'Can not connect to the server';
+  return 'Cannot connect to the server';
 }
