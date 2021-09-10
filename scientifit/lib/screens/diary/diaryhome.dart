@@ -414,36 +414,38 @@ class _DiaryHomeState extends State<DiaryHome> {
                   ],
                 ),
               ),
-              DragTarget<ExerciseEntry>(
-                builder: (BuildContext context, List<ExerciseEntry?> candidateData, List<dynamic> rejectedData) => Container(
-                  padding: EdgeInsets.all(25),
-                  height: 620,
-                  child: Card(
-                      elevation: 10,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
-                          side: BorderSide(color: Color(0xFF2B463C), width: 3.0)),
-                      /* TODO: DIARY CARD */
-                      child: FutureBuilder<String>(
-                        future: _calculation(),
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData) {
-                            return GridView.builder(
-                              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2),
-                              itemCount: _foodEntries.length + _exEntries.length,
-                              padding: const EdgeInsets.all(15),
-                              itemBuilder: (context, index) {
-                                if (index < _foodEntries.length)
-                                  return FoodCard(food: _foodEntries[index]);
-                                return ExerciseCard(exercise: _exEntries[index - _foodEntries.length]);
-                              },
-                            );
-                          } else {
-                            return Loading();
+              DragTarget<FoodEntry>(
+                builder: (_, __, ___) => DragTarget<ExerciseEntry>(
+                  builder: (_, __, ___) => Container(
+                    padding: EdgeInsets.all(25),
+                    height: 620,
+                    child: Card(
+                        elevation: 10,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                            side: BorderSide(color: Color(0xFF2B463C), width: 3.0)),
+                        /* TODO: DIARY CARD */
+                        child: FutureBuilder<String>(
+                          future: _calculation(),
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              return GridView.builder(
+                                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 2),
+                                itemCount: _foodEntries.length + _exEntries.length,
+                                padding: const EdgeInsets.all(15),
+                                itemBuilder: (context, index) {
+                                  if (index < _foodEntries.length)
+                                    return FoodCard(food: _foodEntries[index]);
+                                  return ExerciseCard(exercise: _exEntries[index - _foodEntries.length]);
+                                },
+                              );
+                            } else {
+                              return Loading();
+                            }
                           }
-                        }
-                      )),
+                        )),
+                  ),
                 ),
               ),
             ],

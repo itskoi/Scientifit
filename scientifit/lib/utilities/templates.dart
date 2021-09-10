@@ -1,5 +1,4 @@
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:scientifit/models/databaseentry.dart';
 import 'package:scientifit/models/diaryentry.dart';
 import 'package:flutter/material.dart';
 import 'package:scientifit/utilities/singleton.dart' as global;
@@ -16,7 +15,7 @@ class ExerciseCard extends StatefulWidget {
 class _ExerciseCardState extends State<ExerciseCard> {
   @override
   Widget build(BuildContext context) {
-    return Draggable<ExerciseEntry>(
+    return LongPressDraggable<ExerciseEntry>(
       onDraggableCanceled: (_, __) async {
         await global.databaseService!.removeExerciseFromDiary(widget.exercise);
         print('Remove exercise: ${global.dbExercise[widget.exercise.did]!.name}!');
@@ -162,7 +161,7 @@ class FoodCard extends StatefulWidget {
 class _FoodCardState extends State<FoodCard> {
   @override
   Widget build(BuildContext context) {
-    return Draggable<FoodEntry>(
+    return LongPressDraggable<FoodEntry>(
       onDraggableCanceled: (_, __) async {
         await global.databaseService!.removeFoodFromDiary(widget.food);
         print('Remove food: ${global.dbFood[widget.food.did]!.name}!');
