@@ -41,7 +41,7 @@ class _DiaryHomeState extends State<DiaryHome> {
     _exEntries.forEach((element) => burned += element.caloriesBurned);
     _foodEntries.forEach((element) => consumed += element.caloriesGained);
 
-    if (global.currentUser!.gender == false) {
+    if (global.currentUser!.gender == true) {
       // Male
       balance = (66.5 + 13.8 * global.currentUser!.weight + 5 * global.currentUser!.height) / (8.8 * global.currentUser!.age);
     } else {
