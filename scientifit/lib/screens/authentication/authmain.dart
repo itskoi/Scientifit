@@ -33,7 +33,7 @@ class AuthMain extends StatelessWidget {
               height: 5,
             ),
             Text(
-              'From the outside, it was a wonder that he was able to get up so early each morning for someone who had absolutely no plans to be productive during the entire day.',
+              'Please sign up to use Scientifit. If you are a returning user, please log in.',
               overflow: TextOverflow.clip,
               style: TextStyle(
                   fontFamily: 'OpenSans',

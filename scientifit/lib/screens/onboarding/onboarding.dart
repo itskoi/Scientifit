@@ -14,9 +14,9 @@ class _OnBoardingState extends State<OnBoarding> {
     return IntroductionScreen(
       pages: [
         PageViewModel(
-          title: "Welcome",
+          title: "Welcome to Scientifit!",
           body:
-          "She reached her goal, exhausted. Even more chilling to her was that the euphoria that she thought she'd feel upon reaching it wasn't there. ",
+          "We hope you enjoy your stay\nand have a wonderful journey\nwith your diet and fitness!",
           image: Padding(
             padding: const EdgeInsets.fromLTRB(0, 50, 0, 0),
             child: Stack(
@@ -49,7 +49,7 @@ class _OnBoardingState extends State<OnBoarding> {
         PageViewModel(
           title: "Track your meals",
           body:
-          "Maybe such a discussion would result in the determination that meant to be is exactly as meaningless a phrase as it seems to be, and that none of us is actually meant to be doing anything at all.",
+          "Keep tabs on what you ate,\nwhen you ate them, and how much they\naffect your nutritional plan!",
           image: Padding(
             padding: const EdgeInsets.fromLTRB(0, 50, 0, 0),
             child: Stack(
@@ -85,7 +85,7 @@ class _OnBoardingState extends State<OnBoarding> {
         PageViewModel(
           title: "Get fit",
           body:
-          "But that's my existential underpants underpinnings showing. It's the way the cookie crumbles. And now I want a cookie.",
+          "Manage your exercise regimen and view how it interacts with your body and diet!",
           image: Padding(
             padding: const EdgeInsets.fromLTRB(0, 50, 0, 0),
             child: Stack(
@@ -119,7 +119,7 @@ class _OnBoardingState extends State<OnBoarding> {
         PageViewModel(
           title: "Join our community",
           body:
-          "It was something Greg had said he would never wish upon anyone a million times, yet here he was knowingly letting it happen to one of his best friends.",
+          "Connect with likeminded people\nfor tips and advice\non living a wholesome and healthy life!",
           image: Padding(
             padding: const EdgeInsets.fromLTRB(0, 50, 0, 0),
             child: Stack(
