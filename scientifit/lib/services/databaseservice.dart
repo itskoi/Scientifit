@@ -84,6 +84,7 @@ class DatabaseService {
       List<FoodEntry> myFoodEntries = global.currentUser!.myFoodEntries;
       print('Food Entries length: ${myFoodEntries.length}');
       myFoodEntries.remove(food);
+      print('Food Entries length 2: ${myFoodEntries.length}');
       return await userCollection.doc(uid).update({
         'myFoodEntries' : myFoodEntries.map((e) => {
           'did' : e.did,
