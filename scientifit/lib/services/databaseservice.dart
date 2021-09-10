@@ -16,7 +16,7 @@ class DatabaseService {
 
   // Add new user data
   Future addNewUser({required String username, required String email,
-    bool gender = false, int age = 18, int height = 170, int weight = 60}) async {
+    bool gender = true, int age = 18, int height = 170, int weight = 60}) async {
     return await userCollection.doc(uid).set({
       'username': username,
       'email': email,
@@ -28,6 +28,30 @@ class DatabaseService {
       'myFoodEntries' : []
     }).then((value) => print("Account Added"))
         .catchError((error) => print("Failed to add the account: $error"));
+  }
+
+  // Edit Biometric
+  Future updateBiometric({required int height, required int weight, required bool gender}) async {
+    return await userCollection.doc(uid).set({
+      'username' : currentUser!.username,
+      'email' : currentUser!.email,
+      'age' : currentUser!.age,
+      'gender': gender,
+      'height' : height,
+      'weight' : weight,
+      'myExEntries' : currentUser!.myExEntries.map((e) => {
+        'did' : e.did,
+        'date' : e.date,
+        'caloriesBurned' : e.caloriesBurned,
+        'duration' : e.duration
+      }).toList(),
+      'myFoodEntries' : currentUser!.myFoodEntries.map((e) => {
+        'did' : e.did,
+        'date' : e.date,
+        'caloriesGained' : e.caloriesGained,
+        'servingSize' : e.servingSize
+      }).toList(),
+    });
   }
 
   // Add exercise to Diary

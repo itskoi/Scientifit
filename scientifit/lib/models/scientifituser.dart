@@ -9,7 +9,7 @@ class ScientifitUser {
   String username;
   String email;
 
-  bool gender;
+  bool gender; // true: male ; false: female
   int age;
   int height;
   int weight;
