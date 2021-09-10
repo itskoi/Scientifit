@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:scientifit/models/databaseentry.dart';
 import 'package:scientifit/models/diaryentry.dart';
 import 'package:scientifit/models/scientifituser.dart';
-import 'package:scientifit/utilities/singleton.dart';
+import 'package:scientifit/utilities/singleton.dart' as global;
 
 class DatabaseService {
 
@@ -32,78 +32,89 @@ class DatabaseService {
 
   // Edit Biometric
   Future updateBiometric({required int height, required int weight, required bool gender}) async {
-    return await userCollection.doc(uid).set({
-      'username' : currentUser!.username,
-      'email' : currentUser!.email,
-      'age' : currentUser!.age,
+    return await userCollection.doc(uid).update({
       'gender': gender,
       'height' : height,
       'weight' : weight,
-      'myExEntries' : currentUser!.myExEntries.map((e) => {
-        'did' : e.did,
-        'date' : e.date,
-        'caloriesBurned' : e.caloriesBurned,
-        'duration' : e.duration
-      }).toList(),
-      'myFoodEntries' : currentUser!.myFoodEntries.map((e) => {
-        'did' : e.did,
-        'date' : e.date,
-        'caloriesGained' : e.caloriesGained,
-        'servingSize' : e.servingSize
-      }).toList(),
     });
+  }
+
+  // Remove a exercise from Diary
+  Future removeExerciseFromDiary(ExerciseEntry ex) async {
+    try {
+      List<ExerciseEntry> myExEntries = global.currentUser!.myExEntries;
+      print('Ex Entries length: ${myExEntries.length}');
+      myExEntries.remove(ex);
+      return await userCollection.doc(uid).update({
+        'myExEntries' : myExEntries.map((e) => {
+          'did' : e.did,
+          'date' : e.date,
+          'caloriesBurned' : e.caloriesBurned,
+          'duration' : e.duration
+        }).toList(),
+      });
+    }
+    catch (exception) {
+      print('Remove Exercise exception: ${exception.toString()}');
+    }
   }
 
   // Add exercise to Diary
   Future addExerciseToDiary(ExerciseEntry ex) async {
-    List<ExerciseEntry> myExEntries = currentUser!.myExEntries;
-    myExEntries.add(ex);
-    return await userCollection.doc(uid).set({
-      'username' : currentUser!.username,
-      'email' : currentUser!.email,
-      'age' : currentUser!.age,
-      'gender': currentUser!.gender,
-      'height' : currentUser!.height,
-      'weight' : currentUser!.weight,
-      'myExEntries' : myExEntries.map((e) => {
-        'did' : e.did,
-        'date' : e.date,
-        'caloriesBurned' : e.caloriesBurned,
-        'duration' : e.duration
-      }).toList(),
-      'myFoodEntries' : currentUser!.myFoodEntries.map((e) => {
-        'did' : e.did,
-        'date' : e.date,
-        'caloriesGained' : e.caloriesGained,
-        'servingSize' : e.servingSize
-      }).toList(),
-    });
+    try {
+      List<ExerciseEntry> myExEntries = global.currentUser!.myExEntries;
+      myExEntries.add(ex);
+      return await userCollection.doc(uid).update({
+        'myExEntries' : myExEntries.map((e) => {
+          'did' : e.did,
+          'date' : e.date,
+          'caloriesBurned' : e.caloriesBurned,
+          'duration' : e.duration
+        }).toList(),
+      });
+    }
+    catch (exception) {
+      print('Add Exercise exception: ${exception.toString()}');
+    }
+  }
+
+  // Remove a food from Diary
+  Future removeFoodFromDiary(FoodEntry food) async {
+    try {
+      List<FoodEntry> myFoodEntries = global.currentUser!.myFoodEntries;
+      print('Food Entries length: ${myFoodEntries.length}');
+      myFoodEntries.remove(food);
+      return await userCollection.doc(uid).update({
+        'myFoodEntries' : myFoodEntries.map((e) => {
+          'did' : e.did,
+          'date' : e.date,
+          'caloriesGained' : e.caloriesGained,
+          'servingSize' : e.servingSize
+        }).toList()
+      });
+    }
+    catch(exception) {
+      print('Remove Food exception: ${exception.toString()}');
+    }
   }
 
   // Add food to Diary
   Future addFoodToDiary(FoodEntry food) async {
-    List<FoodEntry> myFoodEntries = currentUser!.myFoodEntries;
-    myFoodEntries.add(food);
-    return await userCollection.doc(uid).set({
-      'username' : currentUser!.username,
-      'email' : currentUser!.email,
-      'age' : currentUser!.age,
-      'gender': currentUser!.gender,
-      'height' : currentUser!.height,
-      'weight' : currentUser!.weight,
-      'myExEntries' : currentUser!.myExEntries.map((e) => {
-        'did' : e.did,
-        'date' : e.date,
-        'caloriesBurned' : e.caloriesBurned,
-        'duration' : e.duration
-      }).toList(),
-      'myFoodEntries' : myFoodEntries.map((e) => {
-        'did' : e.did,
-        'date' : e.date,
-        'caloriesGained' : e.caloriesGained,
-        'servingSize' : e.servingSize
-      }).toList()
-    });
+    try {
+      List<FoodEntry> myFoodEntries = global.currentUser!.myFoodEntries;
+      myFoodEntries.add(food);
+      return await userCollection.doc(uid).update({
+        'myFoodEntries' : myFoodEntries.map((e) => {
+          'did' : e.did,
+          'date' : e.date,
+          'caloriesGained' : e.caloriesGained,
+          'servingSize' : e.servingSize
+        }).toList()
+      });
+    }
+    catch(exception) {
+      print('Add Food exception: ${exception.toString()}');
+    }
   }
 
   // Get user stream
